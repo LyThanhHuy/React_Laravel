@@ -15,32 +15,27 @@ class RedirectIfAuthenticated
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string ...$guards): Response
+    public function handle(Request $request, Closure $next, ...$guards): Response
     {
+        // Nếu không truyền guard → mặc định là [null]
         $guards = empty($guards) ? [null] : $guards;
 
+        // Duyệt qua từng guard (vd: admin, web)
         foreach ($guards as $guard) {
+            // Nếu đã đăng nhập với guard đó
             if (Auth::guard($guard)->check()) {
-                // Nếu là admin thì redirect về dashboard admin
+
+                // Nếu là admin → redirect về dashboard admin
                 if ($guard === 'admin') {
                     return redirect()->route('admin.dashboard');
                 }
 
-                // Người dùng bình thường thì về /home
-                return redirect(RouteServiceProvider::HOME);
+                // Nếu là người dùng thường → redirect về /home
+                return redirect('/home');
             }
         }
 
+        // Nếu chưa đăng nhập → tiếp tục xử lý request bình thường
         return $next($request);
-
-        // $guards = empty($guards) ? [null] : $guards;
-
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         return redirect(RouteServiceProvider::HOME);
-        //     }
-        // }
-
-        // return $next($request);
     }
 }

@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Lưu trữ thông tin kho hàng nơi sản phẩm được lưu trữ
-        Schema::create('warehouses', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
+            // Khóa chính
             $table->id();
-            // Tên của kho hàng
-            $table->string('name');
+            // ID + type (liên kết đa hình với users, products, ...)
+            $table->morphs('imageable');
+            // Đường dẫn ảnh
+            $table->string('url');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('warehouses');
+        Schema::dropIfExists('images');
     }
 };

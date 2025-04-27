@@ -31,7 +31,7 @@
                 <!-- Add more menu items here -->
 
                 <li class="nav-item">
-                    <a href="{{ route('admin.category') }}" class="nav-link {{ request()->is('admin/category') ? 'active' : '' }}">
+                    <a href="{{ route('admin.categories') }}" class="nav-link {{ request()->is('admin/categories') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Category</p>
                     </a>

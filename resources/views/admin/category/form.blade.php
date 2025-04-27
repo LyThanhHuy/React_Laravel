@@ -1,14 +1,20 @@
-<form action="" method="POST" enctype="multipart/form-data">
-    @csrf
-    {{-- @if (!empty($result->id))
-        @method('PUT')
-        <input
-            type="hidden"
-            name="id"
-            value="{{ $result->id }}"
-        />
-    @endif --}}
-    {{-- <input type="hidden" name="lang" value="{{ $lang }}"> --}}
+{{-- resources/views/admin/categories/form.blade.php --}}
 
-    
-</form>
+@csrf
+
+<x-admin.input
+    name="name"
+    label="Category Name"
+    :value="$category->name ?? ''"
+    {{-- required --}}
+/>
+
+<x-admin.input
+    name="slug"
+    label="Slug (URL)"
+    :value="$category->slug ?? ''"
+/>
+
+<button type="submit" class="btn btn-primary">
+    {{ isset($category) ? 'Update' : 'Create' }}
+</button>

@@ -23,8 +23,18 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             // Mật khẩu mã hóa của người dùng
             $table->string('password');
-            // Token để ghi nhớ đăng nhập (dùng cho tính năng "Remember Me"
+            // Token để ghi nhớ đăng nhập (dùng cho tính năng "Remember Me")
             $table->rememberToken();
+            // Số điện thoại người dùng
+            $table->string('phone')->nullable();
+            // Đường dẫn ảnh đại diện
+            $table->string('avatar')->nullable();
+            // Giới tính người dùng
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+            // Ngày sinh (Date of Birth)
+            $table->date('dob')->nullable();
+            // Vai trò người dùng: customer, admin, seller...
+            $table->string('role')->default('customer');
             // Thời gian tạo và cập nhật bản ghi
             $table->timestamps();
         });

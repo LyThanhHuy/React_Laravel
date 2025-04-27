@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Theo dõi đơn hàng của người dùng.
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('wishlists', function (Blueprint $table) {
+            // Khóa chính
             $table->id();
-            // Người đặt hàng
+            // Khóa ngoại đến users.id (người yêu thích)
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            // Trạng thái đơn hàng: pending, completed, ...
-            $table->string('status')->default('pending');
-            // Tổng tiền đơn hàng
-            $table->decimal('total_price', 12, 2);
+            // Khóa ngoại đến products.id (sản phẩm được yêu thích)
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('wishlists');
     }
 };

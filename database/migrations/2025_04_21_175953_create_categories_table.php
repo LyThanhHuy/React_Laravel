@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             // Tên của danh mục
             $table->string('name');
+            // URL-friendly version của tên danh mục
+            $table->string('slug')->unique();
             // Thời gian tạo và cập nhật bản ghi
             $table->timestamps();
         });

@@ -8,25 +8,16 @@ use Illuminate\Http\Request;
 class Authenticate extends Middleware
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * Nếu người dùng chưa đăng nhập, xác định URL cần redirect đến.
      */
-    protected function redirectTo(Request $request): ?string
+    protected function redirectTo($request): ?string
     {
-        return $request->expectsJson() ? null : route('login');
+        // Nếu client không yêu cầu JSON (tức là không phải API)
+        if (! $request->expectsJson()) {
+            // Trả về route login mặc định (bạn có thể đổi thành route('admin.login'))
+            return route('login');
+        }
+
+        return null;
     }
-
-    // protected function redirectTo(Request $request): ?string
-    // {
-    //     if (!$request->expectsJson()) {
-    //         // Nếu URL đang là /admin/* => redirect về route('admin.login')
-    //         if ($request->is('admin') || $request->is('admin/*')) {
-    //             return route('admin.login');
-    //         }
-
-    //         // Ngược lại, dùng login mặc định
-    //         return route('login');
-    //     }
-
-    //     return null;
-    // }
 }

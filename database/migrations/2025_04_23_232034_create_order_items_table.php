@@ -11,13 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Kết nối Products và Suppliers trong quan hệ Many-to-Many.
-        Schema::create('product_supplier', function (Blueprint $table) {
+        Schema::create('order_items', function (Blueprint $table) {
+            // Khóa chính
             $table->id();
-            // Khóa ngoại liên kết với bảng products, xóa bản ghi nếu sản phẩm bị xóa
+            // Khóa ngoại đến orders.id
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            // Khóa ngoại đến products.id
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            // Khóa ngoại liên kết với bảng suppliers, xóa bản ghi nếu nhà cung cấp bị xóa
-            $table->foreignId('supplier_id')->constrained()->onDelete('cascade');
+            // Số lượng sản phẩm mua
+            $table->integer('quantity');
+            // Giá tại thời điểm mua
+            $table->decimal('price', 12, 2);
             $table->timestamps();
         });
     }
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_supplier');
+        Schema::dropIfExists('order_items');
     }
 };

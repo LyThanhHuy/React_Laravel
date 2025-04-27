@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Lưu hình ảnh cho sản phẩm hoặc người dùng.
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('shipping_methods', function (Blueprint $table) {
+            // Khóa chính
             $table->id();
-            // Đường dẫn đến hình ảnh
-            $table->string('url');
-            // Cột đa hình: imageable_id và imageable_type liên kết với products hoặc users
-            $table->morphs('imageable');
+            // Tên phương thức vận chuyển
+            $table->string('name');
+            // Phí vận chuyển
+            $table->decimal('cost', 10, 2);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('shipping_methods');
     }
 };

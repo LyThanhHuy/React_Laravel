@@ -11,7 +11,7 @@ class Category extends Model
     use HasFactory;
 
     protected $primaryKey = 'id'; // Khóa chính: id
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'slug'];
 
     // One-to-Many: Category has many Products
     public function products()
