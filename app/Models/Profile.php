@@ -13,6 +13,7 @@ class Profile extends Model
     protected $primaryKey = 'id'; // Khóa chính: id
     protected $fillable = ['user_id', 'phone', 'address'];
 
+    // Hồ sơ thuộc về một người dùng
     // One-to-One: Profile belongs to User
     public function user()
     {

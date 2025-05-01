@@ -10,41 +10,61 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'id'; // Khóa chính: id
-    protected $fillable = ['name', 'price', 'category_id', 'warehouse_id'];
+    // Khóa chính (mặc định là 'id', có thể không cần khai báo nếu không đổi)
+    protected $primaryKey = 'id';
 
-    // Many-to-One: Product belongs to Category
+    // Tên bảng (mặc định là 'products', có thể khai báo rõ nếu muốn)
+    protected $table = 'products';
+
+    // Các trường được phép fill vào DB
+    protected $fillable = [
+        'user_id',
+        'category_id',
+        'name',
+        'price',
+        'stock'
+    ];
+
+    /**
+     * Quan hệ: Product thuộc về 1 User (người đăng)
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+        // FK: user_id, PK: id của users
+    }
+
+    /**
+     * Quan hệ: Product thuộc về 1 Category
+     */
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+        // FK: category_id, PK: id của categories
     }
 
-    // Many-to-One: Product belongs to Warehouse
-    public function warehouse()
+    /**
+     * Quan hệ: Product có nhiều OrderItem
+     */
+    public function orderItems()
     {
-        return $this->belongsTo(Warehouse::class, 'warehouse_id', 'id');
+        return $this->hasMany(OrderItem::class, 'product_id', 'id');
+        // FK: product_id của order_items, PK: id của products
     }
 
-    // Many-to-Many: Product has many Suppliers
-    public function suppliers()
+    /**
+     * Quan hệ: Product có nhiều Wishlist
+     */
+    public function wishlists()
     {
-        return $this->belongsToMany(
-            Supplier::class,
-            'product_supplier', // Bảng trung gian
-            'product_id',      // Khóa ngoại của Product trong bảng trung gian
-            'supplier_id'      // Khóa ngoại của Supplier trong bảng trung gian
-        );
+        return $this->hasMany(Wishlist::class, 'product_id', 'id');
     }
 
-    // One-to-One Polymorphic: Product has one Image
-    public function image()
+    /**
+     * Quan hệ đa hình: Product có nhiều Images
+     */
+    public function images()
     {
-        return $this->morphOne(Image::class, 'imageable');
-    }
-
-    // One-to-Many Polymorphic: Product has many Comments
-    public function comments()
-    {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Image::class, 'imageable');
     }
 }

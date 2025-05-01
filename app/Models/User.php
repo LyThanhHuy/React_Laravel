@@ -22,6 +22,11 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone',
+        'avatar',
+        'gender',
+        'dob',
+        'role'
     ];
 
     /**
@@ -44,34 +49,39 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // One-to-One: User has one Profile
+    // Một người dùng có một hồ sơ cá nhân (profile)
     public function profile()
     {
         return $this->hasOne(Profile::class, 'user_id', 'id');
     }
 
-    // One-to-Many: User has many Orders
+    // Một người dùng có nhiều đơn hàng
     public function orders()
     {
         return $this->hasMany(Order::class, 'user_id', 'id');
     }
 
-    // Has-Many-Through: User has many Products through Orders
+    // Một người dùng có thể có nhiều sản phẩm đã đăng
     public function products()
     {
-        return $this->hasManyThrough(
-            Product::class,
-            Order::class,
-            'user_id', // Khóa ngoại trên bảng Orders
-            'id',      // Khóa chính trên bảng Products
-            'id',      // Khóa chính trên bảng Users
-            'product_id' // Khóa ngoại trên bảng Orders
-        );
+        return $this->hasMany(Product::class, 'user_id', 'id');
     }
 
-    // One-to-One Polymorphic: User has one Image
-    public function image()
+    // Một người dùng có nhiều sản phẩm trong danh sách yêu thích
+    public function wishlists()
     {
-        return $this->morphOne(Image::class, 'imageable');
+        return $this->hasMany(Wishlist::class, 'user_id', 'id');
+    }
+
+    // Một người dùng có thể có nhiều vai trò (role)
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+    // Một người dùng có thể có nhiều bình luận
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'user_id', 'id');
     }
 }

@@ -11,7 +11,7 @@ class Image extends Model
     use HasFactory;
 
     protected $primaryKey = 'id'; // Khóa chính: id
-    protected $fillable = ['url', 'imageable_id', 'imageable_type'];
+    protected $fillable = ['imageable_id', 'imageable_type', 'url'];
 
     // One-to-One Polymorphic: Image belongs to Imageable
     public function imageable()

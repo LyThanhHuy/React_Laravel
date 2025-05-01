@@ -64,18 +64,18 @@ class CategoryService extends BaseService
             $slug = Str::slug($data['slug']);
 
             // Kiểm tra trùng name (ngoại trừ chính mình)
-            if (Category::where('name', $data['name'])->where('id', '<>', $category->id)->exists()) {
-                throw ValidationException::withMessages([
-                    'name' => 'The category name already exists. Please choose another one.',
-                ]);
-            }
+            // if (Category::where('name', $data['name'])->where('id', '<>', $category->id)->exists()) {
+            //     throw ValidationException::withMessages([
+            //         'name' => 'The category name already exists. Please choose another one.',
+            //     ]);
+            // }
 
             // Kiểm tra trùng slug (ngoại trừ chính mình)
-            if (Category::where('slug', $slug)->where('id', '<>', $category->id)->exists()) {
-                throw ValidationException::withMessages([
-                    'slug' => 'The slug already exists. Please choose another one.',
-                ]);
-            }
+            // if (Category::where('slug', $slug)->where('id', '<>', $category->id)->exists()) {
+            //     throw ValidationException::withMessages([
+            //         'slug' => 'The slug already exists. Please choose another one.',
+            //     ]);
+            // }
 
             // Cập nhật
             $category->update([

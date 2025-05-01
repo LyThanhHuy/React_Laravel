@@ -11,23 +11,24 @@ class Order extends Model
     use HasFactory;
 
     protected $primaryKey = 'id'; // Khóa chính: id
-    protected $fillable = ['user_id', 'product_id', 'total'];
+    protected $fillable = ['user_id', 'status', 'total_price'];
 
     // Many-to-One: Order belongs to User
+    // Đơn hàng thuộc về một người dùng
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    // Many-to-One: Order belongs to Product
-    public function product()
+    // Đơn hàng có nhiều sản phẩm (qua order_items)
+    public function orderItems()
     {
-        return $this->belongsTo(Product::class, 'product_id', 'id');
+        return $this->hasMany(OrderItem::class, 'order_id', 'id');
     }
 
-    // One-to-Many Polymorphic: Order has many Comments
-    public function comments()
+    // Đơn hàng có thể áp dụng nhiều coupon
+    public function coupons()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->belongsToMany(Coupon::class, 'order_coupons', 'order_id', 'coupon_id');
     }
 }

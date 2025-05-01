@@ -13,6 +13,7 @@ class Category extends Model
     protected $primaryKey = 'id'; // Khóa chính: id
     protected $fillable = ['name', 'slug'];
 
+    // Danh mục có nhiều sản phẩm
     // One-to-Many: Category has many Products
     public function products()
     {

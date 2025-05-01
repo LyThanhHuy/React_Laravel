@@ -32,6 +32,7 @@ Route::get('admin/dashboard', function () {
 
 
 Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function () {
+
     Route::get('categories', [CategoryController::class, 'index'])->name('categories');
     // Form tạo mới danh mục
     Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
@@ -41,6 +42,8 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
     Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     // Gửi request edit danh mục
     Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+
+    
 });
 
 // Logout
