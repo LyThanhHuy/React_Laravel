@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -43,7 +44,17 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
     // Gửi request edit danh mục
     Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
 
-    
+    Route::get('products', [ProductController::class, 'index'])->name('products');
+    // Form tạo mới products
+    Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+    // Tạo mới products
+    Route::post('products/store', [ProductController::class, 'store'])->name('products.store');
+    // Form edit products
+    Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    // Gửi request edit products
+    Route::put('products/{product}/', [ProductController::class, 'update'])->name('products.update');
+    // Xóa products
+    Route::delete('products/{product}/', [ProductController::class, 'destroy'])->name('products.destroy');
 });
 
 // Logout
