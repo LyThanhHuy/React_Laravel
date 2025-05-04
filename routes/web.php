@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,7 +27,10 @@ Route::get('/', function () {
 Route::get('admin/login', [LoginController::class, 'showLoginForm'])->name('admin.login');
 Route::post('admin/login', [LoginController::class, 'login'])->name('admin.login.submit');
 
-// Dashboard
+// Logout
+Route::post('admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
+
+// Dashboard Admin
 Route::get('admin/dashboard', function () {
     return view('admin.dashboard.index');
 })->middleware('auth:admin')->name('admin.dashboard');
@@ -57,5 +61,6 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
     Route::delete('products/{product}/', [ProductController::class, 'destroy'])->name('products.destroy');
 });
 
-// Logout
-Route::post('admin/logout', [LoginController::class, 'logout'])->name('admin.logout');
+
+// Dashboard User
+Route::get('/dashboard', [UserDashboardController::class, 'index']);
