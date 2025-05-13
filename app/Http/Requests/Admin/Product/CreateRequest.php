@@ -23,6 +23,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'name'        => 'required|string|max:255',
+            'slug'        => 'required|string|max:255|unique:products,slug',
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
@@ -35,6 +36,8 @@ class CreateRequest extends FormRequest
         return [
             'name.required'        => 'The product name is required.',
             'name.max'             => 'The product name must not exceed 255 characters.',
+            'slug.unique'          => 'The slug has already been taken. Please choose another one.',
+            'slug.max'             => 'The slug must not exceed 255 characters.',
             'price.required'       => 'The product price is required.',
             'price.numeric'        => 'The price must be a number.',
             'price.min'            => 'The price must be at least 0.',

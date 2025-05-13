@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ProductService extends BaseService
 {
@@ -25,7 +26,7 @@ class ProductService extends BaseService
         DB::beginTransaction();
 
         try {
-
+            $data['slug'] = Str::slug($data['slug']);
             // Tạo sản phẩm
             $product = $this->model->create($data);
 
@@ -43,6 +44,7 @@ class ProductService extends BaseService
     public function update(Product $product, array $data): bool
     {
         try {
+            $data['slug'] = Str::slug($data['slug']);
             return $product->update($data);
         } catch (\Throwable $e) {
             DB::rollBack();

@@ -27,21 +27,21 @@ class CategoryService extends BaseService
         DB::beginTransaction();
 
         try {
-            $slug = Str::slug($data['slug']);
+            // $slug = Str::slug($data['slug']);
 
             // Check trùng name
-            if (Category::where('name', $data['name'])->exists()) {
-                throw ValidationException::withMessages([
-                    'name' => 'The category name already exists. Please choose another one.',
-                ]);
-            }
+            // if (Category::where('name', $data['name'])->exists()) {
+            //     throw ValidationException::withMessages([
+            //         'name' => 'The category name already exists. Please choose another one.',
+            //     ]);
+            // }
 
             // Check trùng slug
-            if (Category::where('slug', $slug)->exists()) {
-                throw ValidationException::withMessages([
-                    'slug' => 'The slug already exists. Please choose another one.',
-                ]);
-            }
+            // if (Category::where('slug', $slug)->exists()) {
+            //     throw ValidationException::withMessages([
+            //         'slug' => 'The slug already exists. Please choose another one.',
+            //     ]);
+            // }
 
             $category = Category::create([
                 'name' => $data['name'],
@@ -96,7 +96,13 @@ class CategoryService extends BaseService
      */
     public function delete(Category $category): bool
     {
-        return $category->delete();
+        // DB::beginTransaction();
+        try {
+            return $category->delete();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**

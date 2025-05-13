@@ -8,6 +8,10 @@
         Add Category
     </a>
 
+    @if (session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
     <table class="table table-bordered table-hover">
         <thead>
             <tr>
@@ -17,7 +21,7 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        {{-- @dd($categories) --}}
+
         <tbody>
             @foreach ($categories as $category)
                 <tr>
@@ -25,10 +29,11 @@
                     <td>{{ $category->name }}</td>
                     <td>{{ $category->slug }}</td>
                     <td>
-                        <a href="{{ route('admin.categories.edit', $category) }}"  class="btn btn-sm btn-warning">
+                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-warning">
                             Edit
                         </a>
-                        <form {{-- action="{{ route('admin.categories.destroy', $category) }}"  --}} method="POST" style="display:inline;">
+                        <form action="{{ route('admin.categories.destroy', $category) }}" method="POST"
+                            style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button class="btn btn-sm btn-danger" onclick="return confirm('Confirm delete?')">Delete</button>
@@ -40,5 +45,5 @@
     </table>
 
     {{ $categories->links() }}
-    
+
 @endsection

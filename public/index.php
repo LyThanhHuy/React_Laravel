@@ -3,6 +3,9 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
+// define() dùng để định nghĩa một hằng số (constant) trong PHP.
+// Laravel định nghĩa hằng số LARAVEL_START.
+// Dùng để tính thời gian thực thi toàn bộ request → phục vụ đo hiệu suất (performance).
 define('LARAVEL_START', microtime(true));
 
 /*
@@ -16,7 +19,12 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
+// Nếu file storage/framework/maintenance.php tồn tại:
+// Ứng dụng đang bảo trì (php artisan down bật).
+// Sẽ không khởi chạy Laravel framework, thay vào đó trả sẵn response bảo trì.
+
+// Giúp tránh lỗi hệ thống khi deploy hoặc bảo trì.
+if (file_exists($maintenance = __DIR__ . '/../storage/framework/maintenance.php')) {
     require $maintenance;
 }
 
@@ -31,7 +39,12 @@ if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php'))
 |
 */
 
-require __DIR__.'/../vendor/autoload.php';
+// Load tất cả thư viện đã cài qua Composer (vendor/ folder).
+
+// Gồm:
+// Core Laravel framework
+// Các package (Guzzle, Carbon, Socialite, Passport...)
+require __DIR__ . '/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -44,12 +57,32 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+// Khởi tạo instance của Illuminate\Foundation\Application.
+
+// Đây là Application Container của Laravel:
+// Quản lý binding service
+// Quản lý lifecycle của hệ thống
+
+
 
 $kernel = $app->make(Kernel::class);
+// Kernel = trung tâm điều phối:
+// Nhận Request
+// Chạy Middleware
+// Gửi Request đến Router
+// Nhận Response trả về
+
 
 $response = $kernel->handle(
     $request = Request::capture()
 )->send();
+// Capture request từ client (browser/API).
+// Handle qua Middleware → Route → Controller.
+// Send response về cho client (HTML, JSON, file...).
+
+
 
 $kernel->terminate($request, $response);
+// Một số middleware (ví dụ: session save, logging request) cần xử lý sau khi response đã gửi đi.
+// terminate() sẽ chạy chúng.

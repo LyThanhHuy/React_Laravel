@@ -59,4 +59,15 @@ class CategoryController extends Controller
         return redirect()->route('admin.categories')
             ->with('success', 'Category updated successfully.');
     }
+
+    public function destroy(int $id) {
+        $category = Category::findOrFail($id);
+        $deleted = $this->service->delete($category);
+
+        if (! $deleted) {
+            return back()->with('error', 'Failed to delete category.');
+        }
+
+        return redirect()->route('admin.categories')->with('success', 'Category deleted successfully!');
+    }
 }

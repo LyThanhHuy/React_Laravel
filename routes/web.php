@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,7 @@ Route::get('admin/dashboard', function () {
 })->middleware('auth:admin')->name('admin.dashboard');
 
 
-Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function () {
+Route::prefix('admin')->middleware('admin:admin')->name('admin.')->group(function () {
 
     Route::get('categories', [CategoryController::class, 'index'])->name('categories');
     // Form tạo mới danh mục
@@ -47,6 +48,8 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
     Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit');
     // Gửi request edit danh mục
     Route::put('categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    // Xóa danh mục
+    Route::delete('categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
     Route::get('products', [ProductController::class, 'index'])->name('products');
     // Form tạo mới products
@@ -59,6 +62,8 @@ Route::prefix('admin')->middleware('auth:admin')->name('admin.')->group(function
     Route::put('products/{product}/', [ProductController::class, 'update'])->name('products.update');
     // Xóa products
     Route::delete('products/{product}/', [ProductController::class, 'destroy'])->name('products.destroy');
+
+    Route::get('orders', [OrderController::class, 'index'])->name('orders');
 });
 
 

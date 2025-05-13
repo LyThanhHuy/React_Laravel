@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin\Product;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -21,13 +23,32 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = optional($this->route('product'))->id;
         return [
             'name'        => 'required|string|max:255',
+            'slug'        => ['required', 'string', 'max:255', Rule::unique('products', 'slug')->ignore($id),],
             'price'       => 'required|numeric|min:0',
             'stock'       => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'user_id'     => 'required|exists:users,id',
         ];
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $id = optional($this->route('product'))->id; // ID đang chỉnh sửa
+            $slug = \Str::slug($this->input('slug'));
+
+            // Kiểm tra trùng slug
+            $slugExists = Product::where('slug', $slug)
+                ->where('id', '<>', $id)
+                ->exists();
+
+            if ($slugExists) {
+                $validator->errors()->add('slug', 'The slug has already been taken.');
+            }
+        });
     }
 
     public function messages(): array

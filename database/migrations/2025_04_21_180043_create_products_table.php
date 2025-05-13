@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             // Tên của sản phẩm
             $table->string('name');
+            // URL-friendly version của tên danh mục
+            $table->string('slug')->unique();
             // Giá của sản phẩm
             $table->bigInteger('price');
             // Số lượng tồn kho

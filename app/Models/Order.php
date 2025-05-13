@@ -13,6 +13,25 @@ class Order extends Model
     protected $primaryKey = 'id'; // Khóa chính: id
     protected $fillable = ['user_id', 'status', 'total_price'];
 
+    // 🔁 Các trạng thái đơn hàng (hằng số)
+    const STATUS_PENDING   = 'pending';
+    const STATUS_PAID      = 'paid';
+    const STATUS_SHIPPED   = 'shipped';
+    const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled';
+
+    // 🔁 Mảng các trạng thái đơn hàng với nhãn tiếng Việt
+    public static function statuses()
+    {
+        return [
+            self::STATUS_PENDING   => 'Pending',
+            self::STATUS_PAID      => 'Paid',
+            self::STATUS_SHIPPED   => 'Shipped',
+            self::STATUS_COMPLETED => 'Completed',
+            self::STATUS_CANCELLED => 'Cancelled',
+        ];
+    }
+
     // Many-to-One: Order belongs to User
     // Đơn hàng thuộc về một người dùng
     public function user()
